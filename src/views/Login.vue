@@ -26,6 +26,7 @@
                           placeholder="Enter email"
                           autofocus
                           required
+                          v-model="email"
                         />
                       </div>
                       <div class="mb-3">
@@ -34,6 +35,8 @@
                           class="form-control"
                           placeholder="Enter password"
                           required
+                          v-model="password"
+
                         />
                       </div>
                       <div class="text-center text-lg-start">
@@ -42,7 +45,7 @@
                           <a href="#">Reset your password now</a>.
                         </p>
                         <button
-                       
+                          @click="loginUser"
                           class="btn btn-primary"
                         >
                           Sign In
@@ -96,10 +99,45 @@
         </div>
       </div>
     </body>
+    v-model="email"
 </template>
 
 <script>
+const API = "http://localhost:5000";
+import axios from "axios";
+
+const config={
+  headers:{
+    "Content-Type":"application/json"
+  }
+}
+
 export default {
-    name:"Login"
+    name:"Login",
+    data(){
+      return {
+        email:'',
+        password:''
+      }
+    },
+    methods:{
+      async loginUser(){
+        try {
+          const res=await axios.post(API+'/api/admin/login',{email:this.email,password:this.password},config)
+          if(res.data.token){
+            localStorage.setItem('token',res.data.token)
+            window.location.href="/Home"
+            localStorage.setItem('name',res.data.data.name)
+          }
+          } catch (error) {
+          console.log(error.message)
+        }
+      }
+    },
+    beforeCreate(){
+      if(localStorage.getItem('token')){
+        window.location.href="/Home"
+      }
+    }
 }
 </script>

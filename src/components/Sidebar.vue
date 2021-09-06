@@ -584,8 +584,8 @@
                 />
               </div>
               <div>
-                <div class="fw-bold">Timotheus Bendan</div>
-                <small class="text-muted">Sales Manager</small>
+                <div class="fw-bold">{{name}}</div>
+                <small class="text-muted">Admin</small>
               </div>
             </a>
             <div class="dropdown-menu dropdown-menu-end">
@@ -603,9 +603,8 @@
                 <i class="bi bi-gear dropdown-item-icon"></i> Settings
               </a>
               <a
-                href="/"
+                @click="logout"
                 class="dropdown-item d-flex align-items-center text-danger"
-                target="_blank"
               >
                 <i class="bi bi-box-arrow-right dropdown-item-icon"></i> Logout
               </a>
@@ -678,6 +677,17 @@ export default {
     name:"Sidebar",
     props: {
       address : String
+    },
+    data(){
+      return {
+        name:localStorage.getItem('name')
+      }
+    },
+    methods:{
+      logout(){
+        localStorage.clear();
+        window.location.href="/"
+      }
     }
 }
 
